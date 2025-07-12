@@ -1,11 +1,28 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/notion-budget-planner/notion-budget-planner', '.']
-    env:
-      - 'DOCKER_BUILDKIT=1'
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/notion-budget-planner/notion-budget-planner', '.']
+  env:
+    - 'DOCKER_BUILDKIT=1'
 
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'notion-budget-planner'
+  - '--image=gcr.io/notion-budget-planner/notion-budget-planner'
+  - '--region=us-east1'
+  - '--platform=managed'
+  - '--allow-unauthenticated'
+  - '--service-account=1005781479849-compute@developer.gserviceaccount.com'
+  - '--set-env-vars=NODE_ENV=production'
+  - '--set-secrets=NOTION_TOKEN=NOTION_TOKEN:latest,DATABASE_ID=DATABASE_ID:latest'
+
+# Push the container image to Container Registry
 images:
-  - 'gcr.io/notion-budget-planner/notion-budget-planner'
+- 'gcr.io/notion-budget-planner/notion-budget-planner'
 
 options:
   logging: CLOUD_LOGGING_ONLY
