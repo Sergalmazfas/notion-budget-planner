@@ -2,6 +2,7 @@
 FROM node:20-slim as frontend
 WORKDIR /app/client
 COPY client/package*.json ./
+RUN apt-get update && apt-get install -y python3 g++ make
 RUN npm install
 COPY client/ ./
 RUN npm run build
