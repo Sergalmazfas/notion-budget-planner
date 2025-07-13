@@ -6,6 +6,7 @@ const notion = new Client({
 });
 
 const database_id = process.env.NOTION_DATABASE_ID;
+console.log('DATABASE_ID:', database_id); // Log the database ID
 
 module.exports = async function getBudgetData(options) {
 
