@@ -140,3 +140,13 @@ async function getResults(payload, results) {
 		return results;
 	}
 }
+
+module.exports.checkNotionConnection = async function checkNotionConnection() {
+	try {
+		await notion.databases.retrieve({ database_id: database_id });
+		return { status: 'ok' };
+	} catch (error) {
+		console.error('Notion API health check failed:', error.message);
+		return { status: 'error', error: error.message };
+	}
+}
