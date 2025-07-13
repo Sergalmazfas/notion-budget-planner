@@ -12,6 +12,10 @@ app.get('/api', (req, res) => {
 	res.json({ message: "Hello from server!" });
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 app.get('/budgetData', async (req, res) => {
 	const options = {
 		type: req.query.type,
